@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Daily Rosary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<style>
+:root{--bg:#f4ecdc;--card:#fbf6ea;--ink:#2a1f14;--muted:#7a6a55;--gold:#9a6f1f;--off:#d8cbb0;--line:#bfae8c;--accent:#7b1e2b;--on-accent:#fbf6ea;
+ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#130f0d;--card:#1d1713;--ink:#efe4cf;--muted:#a39278;--gold:#d6ac55;--off:#3a3028;--line:#4a3d31;--accent:#c25b64;--on-accent:#130f0d}}
+:root[data-theme="dark"]{--bg:#130f0d;--card:#1d1713;--ink:#efe4cf;--muted:#a39278;--gold:#d6ac55;--off:#3a3028;--line:#4a3d31;--accent:#c25b64;--on-accent:#130f0d}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"Cormorant Garamond",Georgia,"Times New Roman",serif;font-size:20px;-webkit-tap-highlight-color:transparent}
+.screen{max-width:540px;margin:0 auto;height:100%;display:flex;flex-direction:column;padding:0 18px;box-sizing:border-box}
+[hidden]{display:none!important}
+.eyebrow{font:600 12px/1 system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+/* home */
+.home{overflow-y:auto;padding-top:28px;padding-bottom:24px}
+.home h1{font-size:46px;line-height:1.02;margin:10px 0 4px;font-weight:700}
+.home .set{color:var(--accent);font-style:italic;font-weight:400}
+.tabs{display:flex;gap:6px;margin:18px 0 14px;flex-wrap:wrap}
+.tab{font:500 13px system-ui,sans-serif;padding:8px 12px;border-radius:99px;border:1px solid var(--line);background:none;color:var(--muted);cursor:pointer}
+.tab[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tab .today{color:var(--gold)}
+.tab[aria-pressed="true"] .today{color:var(--bg)}
+.mlist{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.mlist li{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--line);align-items:baseline}
+.mlist b{font-size:15px;color:var(--gold);width:16px;flex:none}
+.mlist span{font-size:22px;font-weight:600}
+.btn{font:600 16px system-ui,sans-serif;border:0;border-radius:14px;padding:16px 20px;cursor:pointer;background:var(--accent);color:var(--on-accent)}
+.btn.ghost{background:none;color:var(--ink);border:1px solid var(--line)}
+.begin{width:100%;margin-top:22px}
+/* run */
+.run{padding-top:10px}
+.head{display:flex;gap:14px;align-items:stretch}
+.side{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:space-between;padding:2px 0}
+.x{background:none;border:0;color:var(--muted);font:500 14px system-ui,sans-serif;cursor:pointer;padding:8px 0}
+.bar{position:relative;height:4px;background:var(--off);border-radius:4px;margin:8px 0}
+.bar i{display:block;height:100%;width:0;background:var(--gold);border-radius:4px;transition:width .4s}
+.beads{flex:none;height:min(36vh,300px);display:flex;justify-content:center}
+.beads svg{height:100%;width:auto;overflow:visible}
+.bead{fill:var(--off);stroke:var(--line);stroke-width:1;transition:fill .35s,stroke .35s}
+.bead.done{fill:var(--gold);stroke:var(--gold)}
+.bead.cur{fill:var(--accent);stroke:var(--accent)}
+.str{stroke:var(--line);stroke-width:1.5;fill:none}
+.cross{stroke:var(--line);stroke-width:5;stroke-linecap:round}
+.cross.done,.cross.cur{stroke:var(--gold)}
+.card{flex:1;min-height:0;overflow-y:auto;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px 20px;margin-top:6px}
+.phase{color:var(--gold)}
+.card h2{font-size:30px;line-height:1.05;margin:6px 0 10px;font-weight:700}
+.myst{border-left:3px solid var(--accent);padding:2px 0 2px 12px;margin:10px 0 14px}
+.myst .eyebrow{color:var(--accent)}
+.myst h3{margin:4px 0 4px;font-size:23px}
+.myst p{margin:0;font-style:italic;color:var(--muted);font-size:19px;line-height:1.3}
+.myst em{font-size:15px;font-style:normal;font-family:system-ui,sans-serif;color:var(--gold)}
+.prayer{font-size:22px;line-height:1.38;margin:0}
+.dots{flex:none;display:flex;justify-content:center;gap:8px;padding:12px 4px 2px}
+.dots i{flex:1 1 0;max-width:30px;aspect-ratio:1;border-radius:50%;box-sizing:border-box;background:var(--off);border:2px solid var(--line);transition:background .3s,transform .3s,border-color .3s}
+.dots i.on{background:var(--gold);border-color:var(--gold)}
+.dots i.now{background:var(--accent);border-color:var(--accent);transform:scale(1.2);box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.nav{flex:none;display:flex;gap:10px;padding:12px 0 14px}
+.nav .btn.ghost{flex:0 0 30%}
+.nav .btn:last-child{flex:1}
+.beads{flex:none;position:relative;height:130px;display:flex;justify-content:center;cursor:pointer}
+.beads .hint{position:absolute;top:0;right:-6px;font:500 15px system-ui,sans-serif;color:var(--muted)}
+.beads.big{position:fixed;inset:0 0 var(--navh,80px) 0;z-index:20;height:auto;background:var(--bg);align-items:center;padding:env(safe-area-inset-top,0px) 0 0;box-sizing:border-box}
+.beads.big svg{height:84%}
+.beads.big .hint{top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 22px);right:auto;left:0;width:100%;text-align:center;font-size:15px}
+.beads:not(.big) .bead.cur{stroke-width:9}
+.x{align-self:flex-end;font-size:22px;line-height:1;padding:6px 2px 6px 10px}
+.card{padding:14px 16px}
+.card h2{font-size:26px;margin:4px 0 8px}
+.myst h3{font-size:20px}
+.myst p{font-size:17px}
+.prayer{font-size:19px;line-height:1.32}
+.nav{padding:8px 0 10px}
+.nav .btn{padding:13px 16px}
+@media (max-height:700px){.beads{height:104px}}
+.lump{position:absolute;top:50%;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;box-sizing:border-box;background:var(--card);border:2px solid var(--line);transition:background .3s,border-color .3s}
+.lump.on{background:var(--gold);border-color:var(--gold)}
+.myst .eyebrow{font:700 20px/1.2 "Cormorant Garamond",Georgia,serif;letter-spacing:0;text-transform:none;color:var(--ink)}
+.myst h3{font-size:20px;line-height:1.2;margin:2px 0 6px}
+.myst p{font-style:normal;font-weight:600;color:var(--ink);font-size:19px;line-height:1.32}
+.myst h3,.myst .eyebrow,.myst p{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.myst h3{font-weight:600;font-size:14px;line-height:1.4;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);margin:0 0 4px}
+.myst h3 .dc{font-size:1.45em;letter-spacing:.05em}
+.myst .eyebrow{font:600 14px/1.3 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;letter-spacing:.02em;text-transform:none;color:var(--muted)}
+.myst p{font:400 17px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-style:normal;color:var(--ink);margin:8px 0 0}
+.beads.big{overflow:hidden;padding-bottom:12px}
+.beads.big svg{height:80%}
+.beads.big .hint{top:calc(env(safe-area-inset-top,0px) + 10px);bottom:auto;left:auto;right:16px;width:auto;text-align:right;font-size:24px;line-height:1}
+.nav{position:relative;z-index:30;background:var(--bg)}
+.dots{padding:12px 4px 10px}
+</style>
+</head>
+<body>
+<label id="hap" aria-hidden="true" style="position:fixed;left:-99px;top:0;width:1px;height:1px;overflow:hidden;opacity:0"><input type="checkbox" switch tabindex="-1"></label>
+
+<main class="screen home" id="home">
+  <div class="eyebrow" id="date"></div>
+  <h1>Today's<br>mysteries are <span class="set" id="setName"></span></h1>
+  <div class="tabs" id="tabs" role="group" aria-label="Choose mysteries"></div>
+  <ol class="mlist" id="mlist"></ol>
+  <button class="btn begin" id="begin">Begin the Rosary</button>
+</main>
+
+<main class="screen run" id="run" hidden>
+  <div class="head">
+    <div class="beads" id="beads" role="button" tabindex="0" aria-label="Enlarge rosary">
+      <svg id="svg" viewBox="0 0 320 450" aria-label="Rosary beads showing your place"></svg>
+      <span class="hint" id="hint">&#10530;</span>
+    </div>
+    <div class="side">
+      <button class="x" id="exit" aria-label="Exit">&#10005;</button>
+      <span class="eyebrow" id="where"></span>
+      <div class="bar"><i id="prog"></i></div>
+    </div>
+  </div>
+  <section class="card" id="card" aria-live="polite">
+    <div class="eyebrow phase" id="phase"></div>
+    <div class="myst" id="myst" hidden>
+      <h3 id="mname"></h3>
+      <div class="eyebrow" id="mnum"></div>
+      <p id="mdesc"></p>
+    </div>
+    <h2 id="title"></h2>
+    <p class="prayer" id="text"></p>
+  </section>
+  <div class="dots" id="dots" hidden></div>
+  <div class="nav">
+    <button class="btn ghost" id="back">Back</button>
+    <button class="btn" id="next">Next</button>
+  </div>
+</main>
+
+<script>
+const P={
+sign:"In the name of the Father, and of the Son, and of the Holy Spirit. Amen.",
+creed:"I believe in God, the Father almighty, Creator of heaven and earth, and in Jesus Christ, his only Son, our Lord, who was conceived by the Holy Spirit, born of the Virgin Mary, suffered under Pontius Pilate, was crucified, died and was buried; he descended into hell; on the third day he rose again from the dead; he ascended into heaven, and is seated at the right hand of God the Father almighty; from there he will come to judge the living and the dead. I believe in the Holy Spirit, the holy catholic Church, the communion of saints, the forgiveness of sins, the resurrection of the body, and life everlasting. Amen.",
+our:"Our Father, who art in heaven, hallowed be thy name; thy kingdom come; thy will be done on earth as it is in heaven.\n\nGive us this day our daily bread; and forgive us our trespasses as we forgive those who trespass against us; and lead us not into temptation, but deliver us from evil. Amen.",
+hail:"Hail Mary, full of grace, the Lord is with thee; blessed art thou among women, and blessed is the fruit of thy womb, Jesus.\n\nHoly Mary, Mother of God, pray for us sinners, now and at the hour of our death. Amen.",
+glory:"Glory be to the Father, and to the Son, and to the Holy Spirit.\n\nAs it was in the beginning, is now, and ever shall be, world without end. Amen.",
+fatima:"O my Jesus, forgive us our sins, save us from the fires of hell, lead all souls to heaven, especially those in most need of thy mercy.",
+queen:"Hail, Holy Queen, Mother of Mercy, our life, our sweetness and our hope. To thee do we cry, poor banished children of Eve; to thee do we send up our sighs, mourning and weeping in this valley of tears. Turn then, most gracious advocate, thine eyes of mercy toward us, and after this our exile, show unto us the blessed fruit of thy womb, Jesus. O clement, O loving, O sweet Virgin Mary.\n\nV. Pray for us, O holy Mother of God.\nR. That we may be made worthy of the promises of Christ.",
+close:"Let us pray. O God, whose only-begotten Son, by his life, death, and resurrection, has purchased for us the rewards of eternal life, grant, we beseech thee, that by meditating upon these mysteries of the most holy Rosary of the Blessed Virgin Mary, we may imitate what they contain and obtain what they promise, through the same Christ our Lord. Amen.",
+memorare:"Remember, O most gracious Virgin Mary, that never was it known that anyone who fled to your protection, implored your help, or sought your intercession was left unaided. Inspired with this confidence, I fly to you, O Virgin of virgins, my Mother; to you I come; before you I stand, sinful and sorrowful. O Mother of the Word Incarnate, despise not my petitions, but in your mercy hear and answer me. Amen."
+};
+const SETS={
+Joyful:{days:[1,6],m:[
+["The Annunciation","The Angel went in and said to her, ‘Rejoice, you who enjoy God’s favour! The Lord is with you.’ (LK 1:28)"],
+["The Visitation","Elizabeth was filled with the Holy Spirit. She gave a loud cry and said, ‘Of all women, you are the most blessed, and blessed is the fruit of your womb.’ (LK 1:41-42)"],
+["The Birth of Jesus","Mary gave birth to a son, her first-born. She wrapped him in swaddling clothes, and laid him in a manger, because there was no room for them in the inn. (LK 2:7)"],
+["The Presentation","And when the day came for them to be purified in keeping with the Law of Moses, they took him up to Jerusalem to present him to the Lord. (LK 2:22-23)"],
+["Finding Jesus in the Temple","Three days later, they found him in the temple sitting among the teachers, listening to them and asking them questions. (LK 9:46)"]]},
+Sorrowful:{days:[2,5],m:[
+["The Agony in the Garden","In his anguish, Jesus prayed even more earnestly, and His sweat fell to the ground like great drops of blood. (Luke 22:44)"],
+["The Scourging at the Pillar","Pilate then had Jesus taken away and scourged. (John 19:1)"],
+["The Crowning with Thorns","The soldiers stripped him and put a scarlet cloak round him, and having twisted some thorns into a crown, they put this on his head. (Mt 27:28-29)"],
+["The Carrying of the Cross","Jesus carrying his own cross, he went out to the Place of the Skull, or, as it is called in Hebrew, Golgotha. (John 19:17)"],
+["The Crucifixion","Jesus cried out in a loud voice saying, “Father, into your hands I commit my spirit.” With these words, he breathed his last. (Luke 23:46)"]]},
+Glorious:{days:[3,0],m:[
+["The Resurrection","A young man said to them, ‘There is no need to be so amazed. You are looking for Jesus of Nazareth, who was crucified; He has risen.’ (Mt 16:6)"],
+["The Ascension","And so the Lord Jesus, after He had spoken to them, was taken up into heaven; there at the right hand of God, He took his place. (Mk 16:19)"],
+["The Descent of the Holy Spirit","They were all filled with the Holy Spirit and began to speak different languages as the Spirit gave them power to express themselves. (AC 2:4)"],
+["The Assumption","Now a great sign appeared in heaven; a woman, robed with the sun, standing on the moon, and on her head a crown of twelve stars. (RV 12:1)"],
+["The Coronation","You are the glory of Jerusalem! The highest honour of our race! God has approved what you have done. May you be blessed by the Lord Almighty in all the days to come! (JDT 15:9-10)"]]},
+Luminous:{days:[4],m:[
+["The Baptism of Jesus","There was a voice from Heaven, ‘This is my Son, the Beloved; my favour rests on Him.’ (Mt 3:17)"],
+["The Wedding at Cana","Mother Mary said to Jesus, “They have no wine.” She said to the servants, “Do whatever He tells you.” (Jn 2:3-5)"],
+["The Proclamation of the Kingdom of God","The time is fulfilled and the kingdom of God is close at hand. Repent, and believe the gospel. (Mk 1:15)"],
+["The Transfiguration","From the cloud, there came a voice which said, “This is my Son, the Beloved; He enjoys my favour. Listen to Him.” (Mt 17:5)"],
+["The Institution of the Eucharist","Now as they were eating, Jesus took bread and when He had said the blessing, He broke it and gave it to the disciples, ‘Take it and eat.’ He said, ‘This is My Body.’ (Mt 26:26)"]]}
+};
+const ORD=["1st","2nd","3rd","4th","5th"];
+const $=id=>document.getElementById(id);
+const dow=new Date().getDay();
+const todaySet=Object.keys(SETS).find(k=>SETS[k].days.includes(dow));
+let cur=todaySet,steps=[],ends=[],i=0;
+
+/* ---------- home ---------- */
+$("date").textContent=new Date().toLocaleDateString("en-SG",{weekday:"long",day:"numeric",month:"long"});
+function renderHome(){
+  $("setName").textContent=cur;
+  $("tabs").innerHTML="";
+  Object.keys(SETS).forEach(k=>{
+    const b=document.createElement("button");b.className="tab";b.setAttribute("aria-pressed",k===cur);
+    b.innerHTML=k+(k===todaySet?' <span class="today">&bull;</span>':"");
+    b.onclick=()=>{cur=k;renderHome()};$("tabs").appendChild(b);
+  });
+  $("mlist").innerHTML=SETS[cur].m.map((m,n)=>`<li><b>${n+1}</b><span>${m[0]}</span></li>`).join("");
+}
+
+/* ---------- beads ---------- */
+const NS="http://www.w3.org/2000/svg",CX=160,CY=140,R=118;
+const pos={},pt={},seq=["c","t0","t1","t2","t3","t4"];
+for(let k=0;k<55;k++)seq.push("l"+k);
+seq.forEach((id,n)=>pos[id]=n);
+pt.c=[CX,412];pt.t0=[CX,374];pt.t1=[CX,346];pt.t2=[CX,326];pt.t3=[CX,306];pt.t4=[CX,284];
+for(let k=0;k<55;k++){const a=(90-k*360/55)*Math.PI/180;pt["l"+k]=[CX+R*Math.cos(a),CY+R*Math.sin(a)]}
+const big=id=>id==="t0"||id==="t4"||id==="l0"||(id[0]==="l"&&[11,22,33,44].includes(+id.slice(1)));
+function mk(t,at,p){const e=document.createElementNS(NS,t);for(const k in at)e.setAttribute(k,at[k]);(p||$("svg")).appendChild(e);return e}
+function drawBeads(){
+  const s=$("svg");s.innerHTML="";
+  mk("circle",{cx:CX,cy:CY,r:R,class:"str"});
+  mk("line",{x1:CX,y1:CY+R,x2:CX,y2:400,class:"str"});
+  const g=mk("g",{id:"cross"});
+  mk("line",{x1:CX,y1:394,x2:CX,y2:432,class:"cross"},g);mk("line",{x1:CX-12,y1:405,x2:CX+12,y2:405,class:"cross"},g);
+  seq.slice(1).forEach(id=>{
+    const [x,y]=pt[id];
+    mk("circle",{cx:x,cy:y,r:id==="l0"?10:big(id)?7.5:5,class:"bead",id:"b-"+id});
+  });
+}
+function paint(st){
+  const here=st.bead,p=st.done!==undefined?st.done:pos[here];
+  seq.slice(1).forEach(id=>{
+    const e=$("b-"+id);e.setAttribute("class","bead"+(pos[id]<p?" done":"")+(id===here?" cur":""));
+  });
+  $("cross").setAttribute("class",p>0?"done":"cur");
+  $("cross").querySelectorAll("line").forEach(l=>l.setAttribute("class","cross "+(p>0||here==="c"?"done":"")));
+}
+
+/* ---------- steps ---------- */
+function build(){
+  const S=SETS[cur].m;steps=[];ends=[];
+  const add=o=>steps.push(o);
+  add({phase:"Opening",title:"Sign of the Cross",text:P.sign,bead:"c"});
+  add({phase:"Opening",title:"Apostles' Creed",text:P.creed,bead:"c"});
+  add({phase:"Opening",title:"Our Father",text:P.our,bead:"t0"});
+  ["Faith","Hope","Charity"].forEach((v,n)=>add({phase:"Opening",title:"Hail Mary",sub:"for the virtue of "+v,text:P.hail,bead:"t"+(n+1),count:n+1,total:3}));
+  add({phase:"Opening",title:"Glory Be",text:P.glory,bead:"t4"});
+  for(let d=0;d<5;d++){
+    const m={n:ORD[d]+" "+cur+" Mystery",name:S[d][0],desc:S[d][1]},ph="Decade "+(d+1)+" of 5";
+    add({phase:ph,title:"Our Father",text:P.our,bead:"l"+d*11,m,intro:true});
+    for(let h=1;h<=10;h++)add({phase:ph,title:"Hail Mary",text:P.hail,bead:"l"+(d*11+h),m,count:h});
+    add({phase:ph,title:"Glory Be",text:P.glory,bead:"l"+(d*11+10),m,count:10});
+    add({phase:ph,title:"Fatima Prayer",text:P.fatima,bead:"l"+(d*11+10),m,count:10});ends.push(steps.length-1);
+  }
+  add({phase:"Closing",title:"Hail, Holy Queen",text:P.queen,bead:"l0",done:seq.length});
+  add({phase:"Closing",title:"Closing Prayer",text:P.close,bead:"l0",done:seq.length});
+  add({phase:"Closing",title:"Memorare",text:P.memorare,bead:"l0",done:seq.length});
+  add({phase:"Closing",title:"Sign of the Cross",text:P.sign,bead:"c",done:seq.length,end:true});
+}
+function show(){
+  const st=steps[i];
+  $("phase").textContent=st.phase;
+  $("where").textContent=st.count?(st.title==="Hail Mary"?"Hail Mary "+st.count+" of "+(st.total||10):""):"";
+  $("title").textContent=st.title;
+  $("text").style.whiteSpace="pre-line";
+  $("text").textContent=st.text;
+  const m=st.m;$("myst").hidden=!m;
+  if(m){$("mnum").textContent=m.n;$("mname").innerHTML=m.name.split(" ").map(w=>'<span class="dc">'+w[0]+"</span>"+w.slice(1)).join(" ");$("mdesc").textContent=m.desc;$("mdesc").hidden=!st.intro}
+  if(st.sub){const s=document.createElement("div");}
+  $("title").textContent=st.title+(st.sub?" ("+st.sub.replace("for the virtue of ","")+")":"");
+  const dots=$("dots"),tot=st.total||(m?10:0);dots.hidden=!tot;
+  if(tot){dots.innerHTML="";const hm=st.title==="Hail Mary";for(let k=1;k<=tot;k++){const d=document.createElement("i");d.className=hm?(k<st.count?"on":k===st.count?"now":""):(st.intro?"":"on");dots.appendChild(d)}}
+  $("prog").style.width=(i/(steps.length-1)*100)+"%";
+  document.querySelectorAll(".lump").forEach((l,k)=>l.classList.toggle("on",i>=ends[k]));
+  $("back").disabled=i===0;$("back").style.opacity=i===0?.4:1;
+  $("next").textContent=st.end?"Amen — Finish":(st.title==="Hail Mary"&&st.count===10?"Next: Glory Be":"Next");
+  $("card").scrollTop=0;
+  paint(st);
+}
+function go(n){
+  if(n>=steps.length){exit();return}
+  i=Math.max(0,n);show();
+}
+function lumps(){const b=document.querySelector(".bar");b.querySelectorAll(".lump").forEach(n=>n.remove());ends.forEach(x=>{const l=document.createElement("b");l.className="lump";l.style.left=(x/(steps.length-1)*100)+"%";b.appendChild(l)})}
+function start(){build();i=0;$("home").hidden=true;$("run").hidden=false;drawBeads();lumps();show()}
+function exit(){$("run").hidden=true;$("home").hidden=false}
+function haptic(){try{if(navigator.vibrate)navigator.vibrate(12)}catch(e){}try{$("hap").click()}catch(e){}}
+const bd=$("beads");
+function toggleBig(){const on=!bd.classList.contains("big");if(on){const r=document.querySelector(".nav").getBoundingClientRect();bd.style.setProperty("--navh",(document.documentElement.clientHeight-r.top)+"px")}bd.classList.toggle("big",on);$("hint").innerHTML=on?"&#10529;":"&#10530;"}
+bd.onclick=toggleBig;
+bd.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();e.stopPropagation();toggleBig()}};
+$("begin").onclick=start;$("exit").onclick=()=>{if(bd.classList.contains("big"))toggleBig();exit()};
+$("next").onclick=()=>{haptic();go(i+1)};$("back").onclick=()=>{haptic();go(i-1)};
+document.addEventListener("keydown",e=>{
+  if($("run").hidden)return;
+  if(e.key==="Escape"&&bd.classList.contains("big")){toggleBig();return}
+  if(e.key==="ArrowRight"||e.key===" "){e.preventDefault();go(i+1)}
+  if(e.key==="ArrowLeft"){go(i-1)}
+});
+renderHome();
+</script>
+</body>
+</html>
