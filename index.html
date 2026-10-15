@@ -94,6 +94,11 @@ body{background:var(--bg);color:var(--ink);font-family:"Cormorant Garamond",Geor
 .beads.big .hint{top:calc(env(safe-area-inset-top,0px) + 10px);bottom:auto;left:auto;right:16px;width:auto;text-align:right;font-size:24px;line-height:1}
 .nav{position:relative;z-index:30;background:var(--bg)}
 .dots{padding:12px 4px 10px}
+*{touch-action:manipulation}
+button,.dots,.beads{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.dots i{cursor:pointer}
+.myst .eyebrow{margin:0 0 3px}
+.myst h3{margin:0 0 6px}
 </style>
 </head>
 <body>
@@ -122,8 +127,8 @@ body{background:var(--bg);color:var(--ink);font-family:"Cormorant Garamond",Geor
   <section class="card" id="card" aria-live="polite">
     <div class="eyebrow phase" id="phase"></div>
     <div class="myst" id="myst" hidden>
-      <h3 id="mname"></h3>
       <div class="eyebrow" id="mnum"></div>
+      <h3 id="mname"></h3>
       <p id="mdesc"></p>
     </div>
     <h2 id="title"></h2>
@@ -255,7 +260,7 @@ function show(){
   if(st.sub){const s=document.createElement("div");}
   $("title").textContent=st.title+(st.sub?" ("+st.sub.replace("for the virtue of ","")+")":"");
   const dots=$("dots"),tot=st.total||(m?10:0);dots.hidden=!tot;
-  if(tot){dots.innerHTML="";const hm=st.title==="Hail Mary";for(let k=1;k<=tot;k++){const d=document.createElement("i");d.className=hm?(k<st.count?"on":k===st.count?"now":""):(st.intro?"":"on");dots.appendChild(d)}}
+  if(tot){dots.innerHTML="";const hm=st.title==="Hail Mary";for(let k=1;k<=tot;k++){const d=document.createElement("i");d.className=hm?(k<st.count?"on":k===st.count?"now":""):(st.intro?"":"on");d.onclick=()=>{const t=steps.findIndex(x=>x.title==="Hail Mary"&&x.count===k&&x.m===st.m&&x.total===st.total);if(t>=0){haptic();go(t)}};dots.appendChild(d)}}
   $("prog").style.width=(i/(steps.length-1)*100)+"%";
   document.querySelectorAll(".lump").forEach((l,k)=>l.classList.toggle("on",i>=ends[k]));
   $("back").disabled=i===0;$("back").style.opacity=i===0?.4:1;
