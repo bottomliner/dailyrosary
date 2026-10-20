@@ -7,107 +7,99 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,300;1,400&display=swap">
 <style>
+/* ---------- theme ---------- */
 :root{--bg:#f4ecdc;--card:#fbf6ea;--ink:#2a1f14;--muted:#7a6a55;--gold:#9a6f1f;--off:#d8cbb0;--line:#bfae8c;--accent:#7b1e2b;--on-accent:#fbf6ea;
- box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#130f0d;--card:#1d1713;--ink:#efe4cf;--muted:#a39278;--gold:#d6ac55;--off:#3a3028;--line:#4a3d31;--accent:#c25b64;--on-accent:#130f0d}}
-:root[data-theme="dark"]{--bg:#130f0d;--card:#1d1713;--ink:#efe4cf;--muted:#a39278;--gold:#d6ac55;--off:#3a3028;--line:#4a3d31;--accent:#c25b64;--on-accent:#130f0d}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
+  --serif:"Cormorant Garamond",Georgia,"Times New Roman",serif;--sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root{--bg:#130f0d;--card:#1d1713;--ink:#efe4cf;--muted:#a39278;--gold:#d6ac55;--off:#3a3028;--line:#4a3d31;--accent:#c25b64;--on-accent:#130f0d}}
+
+/* ---------- base ---------- */
+*{box-sizing:border-box;touch-action:manipulation}
 html,body{height:100%;margin:0}
-body{background:var(--bg);color:var(--ink);font-family:"Cormorant Garamond",Georgia,"Times New Roman",serif;font-size:20px;-webkit-tap-highlight-color:transparent}
-.screen{max-width:540px;margin:0 auto;height:100%;display:flex;flex-direction:column;padding:0 18px;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:20px var(--serif);-webkit-tap-highlight-color:transparent}
 [hidden]{display:none!important}
-.eyebrow{font:600 12px/1 system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
-/* home */
+button{font-family:var(--sans)}
+button,.beads{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.screen{max-width:540px;height:100%;margin:0 auto;padding:0 18px;display:flex;flex-direction:column}
+.label{font:600 12px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.btn{font:600 16px var(--sans);border:0;border-radius:14px;padding:16px 20px;background:var(--accent);color:var(--on-accent);cursor:pointer}
+.btn.ghost{background:none;color:var(--ink);border:1px solid var(--line)}
+.btn:disabled{opacity:.4}
+.hap{position:fixed;left:-99px;width:1px;height:1px;overflow:hidden;opacity:0}
+
+/* ---------- home ---------- */
 .home{overflow-y:auto;padding-top:28px;padding-bottom:24px}
 .home h1{font-size:46px;line-height:1.02;margin:10px 0 4px;font-weight:700}
 .home .set{color:var(--accent);font-style:italic;font-weight:400}
-.tabs{display:flex;gap:6px;margin:18px 0 14px;flex-wrap:wrap}
-.tab{font:500 13px system-ui,sans-serif;padding:8px 12px;border-radius:99px;border:1px solid var(--line);background:none;color:var(--muted);cursor:pointer}
-.tab[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 14px}
+.tab{font:500 13px var(--sans);padding:8px 12px;border-radius:99px;border:1px solid var(--line);background:none;color:var(--muted);cursor:pointer}
 .tab .today{color:var(--gold)}
+.tab[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .tab[aria-pressed="true"] .today{color:var(--bg)}
 .mlist{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
-.mlist li{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--line);align-items:baseline}
-.mlist b{font-size:15px;color:var(--gold);width:16px;flex:none}
+.mlist li{display:flex;align-items:baseline;gap:14px;padding:12px 0;border-bottom:1px solid var(--line)}
+.mlist b{flex:none;width:16px;font-size:15px;color:var(--gold)}
 .mlist span{font-size:22px;font-weight:600}
-.btn{font:600 16px system-ui,sans-serif;border:0;border-radius:14px;padding:16px 20px;cursor:pointer;background:var(--accent);color:var(--on-accent)}
-.btn.ghost{background:none;color:var(--ink);border:1px solid var(--line)}
 .begin{width:100%;margin-top:22px}
-/* run */
+
+/* ---------- prayer screen: header ---------- */
 .run{padding-top:10px}
-.head{display:flex;gap:14px;align-items:stretch}
+.head{display:flex;gap:14px}
 .side{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:space-between;padding:2px 0}
-.x{background:none;border:0;color:var(--muted);font:500 14px system-ui,sans-serif;cursor:pointer;padding:8px 0}
-.bar{position:relative;height:4px;background:var(--off);border-radius:4px;margin:8px 0}
-.bar i{display:block;height:100%;width:0;background:var(--gold);border-radius:4px;transition:width .4s}
-.beads{flex:none;height:min(36vh,300px);display:flex;justify-content:center}
-.beads svg{height:100%;width:auto;overflow:visible}
+.x{align-self:flex-end;padding:6px 2px 6px 10px;border:0;background:none;color:var(--muted);font:500 22px/1 var(--sans);cursor:pointer}
+.bar{position:relative;height:4px;margin:8px 0;border-radius:4px;background:var(--off)}
+.bar i{display:block;width:0;height:100%;border-radius:4px;background:var(--gold);transition:width .4s}
+.lump{position:absolute;top:50%;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:var(--card);border:2px solid var(--line);transition:background .3s,border-color .3s}
+.lump.on{background:var(--gold);border-color:var(--gold)}
+
+/* ---------- rosary (small, and zoomed) ---------- */
+.beads{position:relative;flex:none;height:130px;aspect-ratio:320/450;cursor:pointer}
+.beads svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.hint{position:absolute;top:0;right:-6px;font:500 15px var(--sans);color:var(--muted)}
+.hint::before{content:"\2922"}
+.str{fill:none;stroke:var(--line);stroke-width:1.5}
+.cross{stroke:var(--gold);stroke-width:5;stroke-linecap:round}
 .bead{fill:var(--off);stroke:var(--line);stroke-width:1;transition:fill .35s,stroke .35s}
 .bead.done{fill:var(--gold);stroke:var(--gold)}
 .bead.cur{fill:var(--accent);stroke:var(--accent)}
-.str{stroke:var(--line);stroke-width:1.5;fill:none}
-.cross{stroke:var(--line);stroke-width:5;stroke-linecap:round}
-.cross.done,.cross.cur{stroke:var(--gold)}
-.card{flex:1;min-height:0;overflow-y:auto;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px 20px;margin-top:6px}
+.run:not(.zoom) .bead.cur{stroke-width:9}
+.zoom .head{flex:1;min-height:0}
+.zoom .side,.zoom .card,.zoom .dots{display:none}
+.zoom .beads{flex:1;height:auto;aspect-ratio:auto}
+.zoom .hint{top:8px;right:12px;font-size:24px}
+.zoom .hint::before{content:"\2921"}
+
+/* ---------- card ---------- */
+.card{flex:1;min-height:0;overflow-y:auto;margin-top:6px;padding:14px 16px;background:var(--card);border:1px solid var(--line);border-radius:18px}
 .phase{color:var(--gold)}
-.card h2{font-size:30px;line-height:1.05;margin:6px 0 10px;font-weight:700}
-.myst{border-left:3px solid var(--accent);padding:2px 0 2px 12px;margin:10px 0 14px}
-.myst .eyebrow{color:var(--accent)}
-.myst h3{margin:4px 0 4px;font-size:23px}
-.myst p{margin:0;font-style:italic;color:var(--muted);font-size:19px;line-height:1.3}
-.myst em{font-size:15px;font-style:normal;font-family:system-ui,sans-serif;color:var(--gold)}
-.prayer{font-size:22px;line-height:1.38;margin:0}
-.dots{flex:none;display:flex;justify-content:center;gap:8px;padding:12px 4px 2px}
-.dots i{flex:1 1 0;max-width:30px;aspect-ratio:1;border-radius:50%;box-sizing:border-box;background:var(--off);border:2px solid var(--line);transition:background .3s,transform .3s,border-color .3s}
-.dots i.on{background:var(--gold);border-color:var(--gold)}
-.dots i.now{background:var(--accent);border-color:var(--accent);transform:scale(1.2);box-shadow:0 2px 8px rgba(0,0,0,.25)}
-.nav{flex:none;display:flex;gap:10px;padding:12px 0 14px}
-.nav .btn.ghost{flex:0 0 30%}
-.nav .btn:last-child{flex:1}
-.beads{flex:none;position:relative;height:130px;display:flex;justify-content:center;cursor:pointer}
-.beads .hint{position:absolute;top:0;right:-6px;font:500 15px system-ui,sans-serif;color:var(--muted)}
-.beads.big{position:fixed;inset:0 0 var(--navh,80px) 0;z-index:20;height:auto;background:var(--bg);align-items:center;padding:env(safe-area-inset-top,0px) 0 0;box-sizing:border-box}
-.beads.big svg{height:84%}
-.beads.big .hint{top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 22px);right:auto;left:0;width:100%;text-align:center;font-size:15px}
-.beads:not(.big) .bead.cur{stroke-width:9}
-.x{align-self:flex-end;font-size:22px;line-height:1;padding:6px 2px 6px 10px}
-.card{padding:14px 16px}
-.card h2{font-size:26px;margin:4px 0 8px}
-.myst h3{font-size:20px}
-.myst p{font-size:17px}
-.prayer{font-size:19px;line-height:1.32}
-.nav{padding:8px 0 10px}
-.nav .btn{padding:13px 16px}
-@media (max-height:700px){.beads{height:104px}}
-.lump{position:absolute;top:50%;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;box-sizing:border-box;background:var(--card);border:2px solid var(--line);transition:background .3s,border-color .3s}
-.lump.on{background:var(--gold);border-color:var(--gold)}
-.myst .eyebrow{font:700 20px/1.2 "Cormorant Garamond",Georgia,serif;letter-spacing:0;text-transform:none;color:var(--ink)}
-.myst h3{font-size:20px;line-height:1.2;margin:2px 0 6px}
-.myst p{font-style:normal;font-weight:600;color:var(--ink);font-size:19px;line-height:1.32}
-.myst h3,.myst .eyebrow,.myst p{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-.myst h3{font-weight:600;font-size:14px;line-height:1.4;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);margin:0 0 4px}
-.myst h3 .dc{font-size:1.45em;letter-spacing:.05em}
-.myst .eyebrow{font:600 14px/1.3 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;letter-spacing:.02em;text-transform:none;color:var(--muted)}
-.myst p{font:400 17px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-style:normal;color:var(--ink);margin:8px 0 0}
-.beads.big{overflow:hidden;padding-bottom:12px}
-.beads.big svg{height:80%}
-.beads.big .hint{top:calc(env(safe-area-inset-top,0px) + 10px);bottom:auto;left:auto;right:16px;width:auto;text-align:right;font-size:24px;line-height:1}
-.nav{position:relative;z-index:30;background:var(--bg)}
-.dots{padding:12px 4px 10px}
-*{touch-action:manipulation}
-button,.dots,.beads{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
-.dots i{cursor:pointer}
-.myst .eyebrow{margin:0 0 3px}
-.myst h3{margin:0 0 6px}
+.card h2{margin:4px 0 8px;font-size:26px;line-height:1.05;font-weight:700}
+.prayer{margin:0;font-size:19px;line-height:1.32;white-space:pre-line}
 .prayer.lg{font-size:21px;line-height:1.38}
 .prayer.note{font-style:italic;font-weight:300;color:var(--muted)}
+
+/* mystery block: number, name (drop caps), description */
+.myst{margin:10px 0 14px;padding:2px 0 2px 12px;border-left:3px solid var(--accent);font-family:var(--sans)}
+.myst-num{margin:0 0 3px;font-size:14px;font-weight:600;line-height:1.3;letter-spacing:.02em;color:var(--muted)}
+.myst-name{margin:0 0 6px;font-size:14px;font-weight:600;line-height:1.4;letter-spacing:.12em;text-transform:uppercase}
+.myst-name .dc{font-size:1.45em;letter-spacing:.05em}
+.myst-desc{margin:8px 0 0;font-size:17px;line-height:1.4}
+
+/* ---------- bead bar + controls ---------- */
+.dots{flex:none;display:flex;justify-content:center;gap:8px;padding:12px 4px 10px}
+.dots button{flex:1 1 0;max-width:30px;aspect-ratio:1;padding:0;border-radius:50%;background:var(--off);border:2px solid var(--line);cursor:pointer;transition:background .3s,transform .3s,border-color .3s}
+.dots .on{background:var(--gold);border-color:var(--gold)}
+.dots .now{background:var(--accent);border-color:var(--accent);transform:scale(1.2);box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.nav{flex:none;display:flex;gap:10px;padding:8px 0 10px}
+.nav .btn{padding:13px 16px}
+.nav .ghost{flex:0 0 30%}
+.nav .btn:last-child{flex:1}
 </style>
 </head>
 <body>
-<label id="hap" aria-hidden="true" style="position:fixed;left:-99px;top:0;width:1px;height:1px;overflow:hidden;opacity:0"><input type="checkbox" switch tabindex="-1"></label>
+<label class="hap" aria-hidden="true"><input type="checkbox" switch tabindex="-1" id="hap"></label>
 
 <main class="screen home" id="home">
-  <div class="eyebrow" id="date"></div>
+  <div class="label" id="date"></div>
   <h1>Today's<br>mysteries are <span class="set" id="setName"></span></h1>
   <div class="tabs" id="tabs" role="group" aria-label="Choose mysteries"></div>
   <ol class="mlist" id="mlist"></ol>
@@ -116,22 +108,22 @@ button,.dots,.beads{-webkit-user-select:none;user-select:none;-webkit-touch-call
 
 <main class="screen run" id="run" hidden>
   <div class="head">
-    <div class="beads" id="beads" role="button" tabindex="0" aria-label="Enlarge rosary">
-      <svg id="svg" viewBox="0 0 320 450" aria-label="Rosary beads showing your place"></svg>
-      <span class="hint" id="hint">&#10530;</span>
+    <div class="beads" id="beads" role="button" tabindex="0" aria-label="Enlarge or shrink the rosary">
+      <svg id="svg" viewBox="0 0 320 450" aria-hidden="true"></svg>
+      <span class="hint"></span>
     </div>
     <div class="side">
       <button class="x" id="exit" aria-label="Exit">&#10005;</button>
-      <span class="eyebrow" id="where"></span>
+      <span class="label" id="where"></span>
       <div class="bar"><i id="prog"></i></div>
     </div>
   </div>
   <section class="card" id="card" aria-live="polite">
-    <div class="eyebrow phase" id="phase"></div>
+    <div class="label phase" id="phase"></div>
     <div class="myst" id="myst" hidden>
-      <div class="eyebrow" id="mnum"></div>
-      <h3 id="mname"></h3>
-      <p id="mdesc"></p>
+      <div class="myst-num" id="mnum"></div>
+      <div class="myst-name" id="mname"></div>
+      <p class="myst-desc" id="mdesc"></p>
     </div>
     <h2 id="title"></h2>
     <p class="prayer" id="text"></p>
@@ -152,7 +144,7 @@ hail:"Hail Mary, full of grace, the Lord is with thee; blessed art thou amongst 
 glory:"Glory be to the Father, and to the Son, and to the Holy Spirit.\n\nAs it was in the beginning, is now, and ever shall be, world without end. Amen.",
 fatima:"O my Jesus, forgive us our sins,\nsave us from the fires of hell.\nLead all souls to heaven,\nespecially those most in need of Thy mercy.",
 queen:"Hail, Holy Queen, Mother of mercy,\nhail our life, our sweetness, and our hope.\nTo thee do we cry,\npoor banished children of Eve,\nto thee do we send up our sighs,\nmourning and weeping\nin this valley of tears.\nTurn then, most gracious advocate,\nthine eyes of mercy toward us;\nand after this our exile show unto us\nthe blessed fruit of thy womb Jesus,\nO clement, O loving, O sweet Virgin Mary.\n\nLeader: Pray for us, O holy Mother of God.\nAll: That we may be made worthy of the promises of Christ.",
-close:"O God, whose only-begotten Son,\nby His life, death, and resurrection,\nhas purchased for us the rewards\nof eternal life;\ngrant we beseech Thee,\nthat meditating on these mysteries\nof the most holy Rosary\nof the Blessed Virgin Mary,\nwe may imitate what they contain\nand obtain what they promise.\nThrough the same Christ our Lord. Amen.",
+close:"Let us pray:\nO God, whose only-begotten Son,\nby His life, death, and resurrection,\nhas purchased for us the rewards\nof eternal life;\ngrant we beseech Thee,\nthat meditating on these mysteries\nof the most holy Rosary\nof the Blessed Virgin Mary,\nwe may imitate what they contain\nand obtain what they promise.\nThrough the same Christ our Lord. Amen.",
 memorare:"Remember, O most gracious Virgin Mary,\nthat never was it known\nthat anyone who fled to your protection,\nimplored your help,\nor sought your intercession\nwas left unaided.\nInspired with this confidence, I fly to you,\nO Virgin of virgins, my Mother;\nto you I come; before you I stand,\nsinful and sorrowful.\nO Mother of the Word Incarnate,\ndespise not my petitions,\nbut in your mercy hear and answer me. Amen."
 };
 const SETS={
@@ -183,8 +175,8 @@ Luminous:{days:[4],m:[
 };
 const ORD=["1st","2nd","3rd","4th","5th"];
 const $=id=>document.getElementById(id);
-const dow=new Date().getDay();
-const todaySet=Object.keys(SETS).find(k=>SETS[k].days.includes(dow));
+const run=$("run");
+const todaySet=Object.keys(SETS).find(k=>SETS[k].days.includes(new Date().getDay()));
 let cur=todaySet,steps=[],ends=[],i=0;
 
 /* ---------- home ---------- */
@@ -193,105 +185,137 @@ function renderHome(){
   $("setName").textContent=cur;
   $("tabs").innerHTML="";
   Object.keys(SETS).forEach(k=>{
-    const b=document.createElement("button");b.className="tab";b.setAttribute("aria-pressed",k===cur);
+    const b=document.createElement("button");
+    b.className="tab";b.setAttribute("aria-pressed",k===cur);
     b.innerHTML=k+(k===todaySet?' <span class="today">&bull;</span>':"");
-    b.onclick=()=>{cur=k;renderHome()};$("tabs").appendChild(b);
+    b.onclick=()=>{cur=k;renderHome()};
+    $("tabs").appendChild(b);
   });
   $("mlist").innerHTML=SETS[cur].m.map((m,n)=>`<li><b>${n+1}</b><span>${m[0]}</span></li>`).join("");
 }
 
-/* ---------- beads ---------- */
+/* ---------- rosary beads ---------- */
 const NS="http://www.w3.org/2000/svg",CX=160,CY=140,R=118;
-const pos={},pt={},seq=["c","t0","t1","t2","t3","t4"];
-for(let k=0;k<55;k++)seq.push("l"+k);
+const seq=["c","t0","t1","t2","t3","t4"],pos={},B={};
+const pt={c:[CX,412],t0:[CX,374],t1:[CX,346],t2:[CX,326],t3:[CX,306],t4:[CX,284]};
+for(let k=0;k<55;k++){
+  seq.push("l"+k);
+  const a=(90-k*360/55)*Math.PI/180;
+  pt["l"+k]=[CX+R*Math.cos(a),CY+R*Math.sin(a)];
+}
 seq.forEach((id,n)=>pos[id]=n);
-pt.c=[CX,412];pt.t0=[CX,374];pt.t1=[CX,346];pt.t2=[CX,326];pt.t3=[CX,306];pt.t4=[CX,284];
-for(let k=0;k<55;k++){const a=(90-k*360/55)*Math.PI/180;pt["l"+k]=[CX+R*Math.cos(a),CY+R*Math.sin(a)]}
-const big=id=>id==="t0"||id==="t4"||id==="l0"||(id[0]==="l"&&[11,22,33,44].includes(+id.slice(1)));
-function mk(t,at,p){const e=document.createElementNS(NS,t);for(const k in at)e.setAttribute(k,at[k]);(p||$("svg")).appendChild(e);return e}
+const isBig=id=>id==="t0"||id==="t4"||(id[0]==="l"&&+id.slice(1)%11===0);
+const mk=(tag,attrs)=>{const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);$("svg").appendChild(e);return e};
 function drawBeads(){
-  const s=$("svg");s.innerHTML="";
+  $("svg").innerHTML="";
   mk("circle",{cx:CX,cy:CY,r:R,class:"str"});
   mk("line",{x1:CX,y1:CY+R,x2:CX,y2:400,class:"str"});
-  const g=mk("g",{id:"cross"});
-  mk("line",{x1:CX,y1:394,x2:CX,y2:432,class:"cross"},g);mk("line",{x1:CX-12,y1:405,x2:CX+12,y2:405,class:"cross"},g);
+  mk("line",{x1:CX,y1:394,x2:CX,y2:432,class:"cross"});
+  mk("line",{x1:CX-12,y1:405,x2:CX+12,y2:405,class:"cross"});
   seq.slice(1).forEach(id=>{
     const [x,y]=pt[id];
-    mk("circle",{cx:x,cy:y,r:id==="l0"?10:big(id)?7.5:5,class:"bead",id:"b-"+id});
+    B[id]=mk("circle",{cx:x,cy:y,r:id==="l0"?10:isBig(id)?7.5:5,class:"bead"});
   });
 }
 function paint(st){
-  const here=st.bead,p=st.done!==undefined?st.done:pos[here];
-  seq.slice(1).forEach(id=>{
-    const e=$("b-"+id);e.setAttribute("class","bead"+(pos[id]<p?" done":"")+(id===here?" cur":""));
-  });
-  $("cross").setAttribute("class",p>0?"done":"cur");
-  $("cross").querySelectorAll("line").forEach(l=>l.setAttribute("class","cross "+(p>0||here==="c"?"done":"")));
+  const p=st.done??pos[st.bead];
+  seq.slice(1).forEach(id=>B[id].setAttribute("class","bead"+(pos[id]<p?" done":"")+(id===st.bead?" cur":"")));
 }
 
-/* ---------- steps ---------- */
+/* ---------- prayer steps ---------- */
 function build(){
-  const S=SETS[cur].m;steps=[];ends=[];
+  const S=SETS[cur].m;
+  steps=[];ends=[];
   const add=o=>steps.push(o);
+  const closing=(title,text,o)=>add({phase:"Closing",title,text,bead:"l0",done:seq.length,...o});
   add({phase:"Opening",title:"Sign of the Cross",text:P.sign,bead:"c"});
   add({phase:"Opening",title:"Apostles' Creed",text:P.creed,bead:"c",lg:true});
   add({phase:"Opening",title:"Our Father",text:P.our,bead:"t0"});
-  ["Faith","Hope","Charity"].forEach((v,n)=>add({phase:"Opening",title:"Hail Mary",sub:"for the virtue of "+v,text:P.hail,bead:"t"+(n+1),count:n+1,total:3}));
+  ["Faith","Hope","Charity"].forEach((v,n)=>add({phase:"Opening",title:"Hail Mary",sub:v,text:P.hail,bead:"t"+(n+1),count:n+1,total:3}));
   add({phase:"Opening",title:"Glory Be",text:P.glory,bead:"t4"});
   for(let d=0;d<5;d++){
-    const m={n:ORD[d]+" "+cur+" Mystery",name:S[d][0],desc:S[d][1]},ph="Decade "+(d+1)+" of 5";
-    add({phase:ph,title:"Our Father",text:P.our,bead:"l"+d*11,m,intro:true});
-    for(let h=1;h<=10;h++)add({phase:ph,title:"Hail Mary",text:P.hail,bead:"l"+(d*11+h),m,count:h});
-    add({phase:ph,title:"Glory Be",text:P.glory,bead:"l"+(d*11+10),m,count:10});
-    add({phase:ph,title:"Fatima Prayer",text:P.fatima,bead:"l"+(d*11+10),m,count:10});ends.push(steps.length-1);
+    const m={n:ORD[d]+" "+cur+" Mystery",name:S[d][0],desc:S[d][1]},phase="Decade "+(d+1)+" of 5",last="l"+(d*11+10);
+    add({phase,title:"Our Father",text:P.our,bead:"l"+d*11,m,intro:true});
+    for(let h=1;h<=10;h++)add({phase,title:"Hail Mary",text:P.hail,bead:"l"+(d*11+h),m,count:h});
+    add({phase,title:"Glory Be",text:P.glory,bead:last,m});
+    add({phase,title:"Fatima Prayer",text:P.fatima,bead:last,m});
+    ends.push(steps.length-1);
   }
-  add({phase:"Closing",title:"Hail, Holy Queen",text:P.queen,bead:"l0",done:seq.length,lg:true});
-  add({phase:"Closing",title:"Closing Prayer",text:P.close,bead:"l0",done:seq.length,lg:true});
-  add({phase:"Closing",title:"Memorare",text:P.memorare,bead:"l0",done:seq.length,lg:true});
-  add({phase:"Closing",title:"Personal Intentions",text:"(Take a moment to offer your personal intentions in your own words.)",bead:"l0",done:seq.length,lg:true,note:true});
+  closing("Hail, Holy Queen",P.queen,{lg:true});
+  closing("Closing Prayer",P.close,{lg:true});
+  closing("Memorare",P.memorare,{lg:true});
+  closing("Personal Intentions","(Take a moment to offer your personal intentions in your own words.)",{lg:true,note:true});
   add({phase:"Closing",title:"Sign of the Cross",text:P.sign,bead:"c",done:seq.length,end:true});
 }
+
 function show(){
-  const st=steps[i];
+  const st=steps[i],m=st.m,hm=st.title==="Hail Mary";
   $("phase").textContent=st.phase;
-  $("where").textContent=st.count?(st.title==="Hail Mary"?"Hail Mary "+st.count+" of "+(st.total||10):""):"";
-  $("title").textContent=st.title;
-  $("text").style.whiteSpace="pre-line";
-  $("text").classList.toggle("lg",!!st.lg);
-  $("text").classList.toggle("note",!!st.note);
+  $("where").textContent=hm?"Hail Mary "+st.count+" of "+(st.total||10):"";
+  $("title").textContent=st.title+(st.sub?" ("+st.sub+")":"");
+  $("text").className="prayer"+(st.lg?" lg":"")+(st.note?" note":"");
   $("text").textContent=st.text;
-  const m=st.m;$("myst").hidden=!m;
-  if(m){$("mnum").textContent=m.n;$("mname").innerHTML=m.name.split(" ").map(w=>'<span class="dc">'+w[0]+"</span>"+w.slice(1)).join(" ");$("mdesc").textContent=m.desc;$("mdesc").hidden=!st.intro}
-  if(st.sub){const s=document.createElement("div");}
-  $("title").textContent=st.title+(st.sub?" ("+st.sub.replace("for the virtue of ","")+")":"");
-  const dots=$("dots"),tot=st.total||(m?10:0);dots.hidden=!tot;
-  if(tot){dots.innerHTML="";const hm=st.title==="Hail Mary";for(let k=1;k<=tot;k++){const d=document.createElement("i");d.className=hm?(k<st.count?"on":k===st.count?"now":""):(st.intro?"":"on");d.onclick=()=>{const t=steps.findIndex(x=>x.title==="Hail Mary"&&x.count===k&&x.m===st.m&&x.total===st.total);if(t>=0){haptic();go(t)}};dots.appendChild(d)}}
+
+  $("myst").hidden=!m;
+  if(m){
+    $("mnum").textContent=m.n;
+    $("mname").innerHTML=m.name.split(" ").map(w=>'<span class="dc">'+w[0]+"</span>"+w.slice(1)).join(" ");
+    $("mdesc").textContent=m.desc;
+    $("mdesc").hidden=!st.intro;
+  }
+
+  const dots=$("dots"),tot=st.total||(m?10:0);
+  dots.hidden=!tot;dots.innerHTML="";
+  for(let k=1;k<=tot;k++){
+    const d=document.createElement("button");
+    d.setAttribute("aria-label","Hail Mary "+k);
+    d.className=hm?(k<st.count?"on":k===st.count?"now":""):(st.intro?"":"on");
+    d.onclick=()=>jump(k);
+    dots.appendChild(d);
+  }
+
   $("prog").style.width=(i/(steps.length-1)*100)+"%";
   document.querySelectorAll(".lump").forEach((l,k)=>l.classList.toggle("on",i>=ends[k]));
-  $("back").disabled=i===0;$("back").style.opacity=i===0?.4:1;
-  $("next").textContent=st.end?"Amen — Finish":(st.title==="Hail Mary"&&st.count===10?"Next: Glory Be":"Next");
+  $("back").disabled=i===0;
+  $("next").textContent=st.end?"Amen — Finish":(hm&&st.count===10?"Next: Glory Be":"Next");
   $("card").scrollTop=0;
   paint(st);
 }
+
+/* ---------- navigation ---------- */
 function go(n){
-  if(n>=steps.length){exit();return}
+  if(n>=steps.length)return exit();
   i=Math.max(0,n);show();
 }
-function lumps(){const b=document.querySelector(".bar");b.querySelectorAll(".lump").forEach(n=>n.remove());ends.forEach(x=>{const l=document.createElement("b");l.className="lump";l.style.left=(x/(steps.length-1)*100)+"%";b.appendChild(l)})}
-function start(){build();i=0;$("home").hidden=true;$("run").hidden=false;drawBeads();lumps();show()}
-function exit(){$("run").hidden=true;$("home").hidden=false}
-function haptic(){try{if(navigator.vibrate)navigator.vibrate(12)}catch(e){}try{$("hap").click()}catch(e){}}
-const bd=$("beads");
-function toggleBig(){const on=!bd.classList.contains("big");if(on){const r=document.querySelector(".nav").getBoundingClientRect();bd.style.setProperty("--navh",(document.documentElement.clientHeight-r.top)+"px")}bd.classList.toggle("big",on);$("hint").innerHTML=on?"&#10529;":"&#10530;"}
-bd.onclick=toggleBig;
-bd.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();e.stopPropagation();toggleBig()}};
-$("begin").onclick=start;$("exit").onclick=()=>{if(bd.classList.contains("big"))toggleBig();exit()};
-$("next").onclick=()=>{haptic();go(i+1)};$("back").onclick=()=>{haptic();go(i-1)};
+function jump(k){
+  const c=steps[i],t=steps.findIndex(x=>x.title==="Hail Mary"&&x.count===k&&x.m===c.m&&x.total===c.total);
+  if(t>=0){haptic();go(t)}
+}
+function lumps(){
+  const bar=document.querySelector(".bar");
+  bar.querySelectorAll(".lump").forEach(n=>n.remove());
+  ends.forEach(x=>{const l=document.createElement("b");l.className="lump";l.style.left=(x/(steps.length-1)*100)+"%";bar.appendChild(l)});
+}
+function start(){build();i=0;$("home").hidden=true;run.hidden=false;drawBeads();lumps();show()}
+function exit(){run.hidden=true;run.classList.remove("zoom");$("home").hidden=false}
+function haptic(){
+  try{if(navigator.vibrate)navigator.vibrate(12)}catch(e){}
+  try{$("hap").click()}catch(e){}
+}
+
+/* ---------- events ---------- */
+$("begin").onclick=start;
+$("exit").onclick=exit;
+$("next").onclick=()=>{haptic();go(i+1)};
+$("back").onclick=()=>{haptic();go(i-1)};
+$("beads").onclick=()=>run.classList.toggle("zoom");
+$("beads").onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();run.classList.toggle("zoom")}};
 document.addEventListener("keydown",e=>{
-  if($("run").hidden)return;
-  if(e.key==="Escape"&&bd.classList.contains("big")){toggleBig();return}
-  if(e.key==="ArrowRight"||e.key===" "){e.preventDefault();go(i+1)}
-  if(e.key==="ArrowLeft"){go(i-1)}
+  if(run.hidden)return;
+  const onControl=e.target.closest("button,[role=button]");
+  if(e.key==="Escape")run.classList.remove("zoom");
+  else if(e.key==="ArrowRight"||(e.key===" "&&!onControl)){e.preventDefault();go(i+1)}
+  else if(e.key==="ArrowLeft")go(i-1);
 });
 renderHome();
 </script>
